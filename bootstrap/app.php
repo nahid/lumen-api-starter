@@ -84,6 +84,7 @@ $app->routeMiddleware([
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+$app->register(Prettus\Repository\Providers\LumenRepositoryServiceProvider::class);
 
 if ($app->environment() != 'production') {
     $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
