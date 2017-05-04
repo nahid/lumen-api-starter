@@ -13,7 +13,8 @@
         "fzaninotto/faker": "~1.4",
         "phpunit/phpunit": "~5.0",
         "mockery/mockery": "~0.9",
-        "flipbox/lumen-generator": "5.3.4"
+        "flipbox/lumen-generator": "5.3.4",
+        "filp/whoops": "2.1.8"
     },
     "autoload": {
         "psr-4": {
