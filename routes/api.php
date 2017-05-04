@@ -14,3 +14,11 @@ $api->get('/', function () {
         'message' =>  'Welcome to '.config('api.name'),
     ]);
 });
+
+$api->post('/auth', 'AuthController@login');
+
+$api->group(['middleware' => 'api.auth'], function() use ($api) {
+    $api->put('/auth', 'AuthController@refresh');
+    $api->patch('/auth', 'AuthController@refresh');
+    $api->delete('/auth', 'AuthController@logout');
+});

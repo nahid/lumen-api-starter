@@ -262,3 +262,15 @@ if (! function_exists('is_api_request')) {
         }
     }
 }
+
+if (! function_exists('user')) {
+    /**
+     * Return the current authenticated user
+     * or empty User object.
+     *
+     * @return \App\Models\User
+     */
+    function user() {
+        return app('auth')->user() ?: new App\Models\User;
+    }
+}

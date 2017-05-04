@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+    (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
@@ -20,13 +20,13 @@ try {
 */
 
 $app = new Laravel\Lumen\Application(
-    realpath(__DIR__.'/../')
+    realpath(__DIR__ . '/../')
 );
 
 // $app->withFacades();
 $app->withEloquent();
 
-/**
+/*
  |--------------------------------------------------------------------------
  | Register Config Files
  |--------------------------------------------------------------------------
@@ -35,17 +35,25 @@ $app->withEloquent();
  | directory.
  */
 
-$app->configure('api');
-$app->configure('app');
-//$app->configure('auth');
-//$app->configure('broadcasting');
-//$app->configure('cache');
-$app->configure('cors');
-$app->configure('database');
-$app->configure('jwt');
-$app->configure('queue');
-$app->configure('repository');
-//$app->configure('view');
+foreach ([
+             'api',
+             'app',
+             'auth',
+             'binding',
+             'broadcasting',
+             'cache',
+             'cors',
+             'database',
+             'jwt',
+             'middleware',
+             'provider',
+             'queue',
+             'repository',
+             'view',
+         ] as $config) {
+    $app->configure($config);
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +78,18 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
+| Register Interface Bindings
+|--------------------------------------------------------------------------
+|
+| Now we will register a few interface bindings in the service container.
+*/
+
+foreach (config('binding') as $abstract => $concrete) {
+    $app->bind($abstract, $concrete);
+}
+
+/*
+|--------------------------------------------------------------------------
 | Register Middleware
 |--------------------------------------------------------------------------
 |
@@ -79,14 +99,8 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
-
-$app->routeMiddleware([
-//    'auth' => App\Http\Middleware\Authenticate::class,
-    'cors' => Barryvdh\Cors\HandleCors::class,
-]);
+$app->middleware(config('middleware.app'));
+$app->routeMiddleware(config('middleware.route'));
 
 /*
 |--------------------------------------------------------------------------
@@ -99,17 +113,10 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
-$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-$app->register(Barryvdh\Cors\ServiceProvider::class);
-$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
-$app->register(Prettus\Repository\Providers\LumenRepositoryServiceProvider::class);
-
-if ($app->environment() != 'production') {
-    $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
-    $app->register(Widnyana\LDRoutesList\CommandServiceProvider::class);
+foreach (config('provider') as $provider => $envs) {
+    if (in_array('all', $envs) || in_array($app->environment(), $envs)) {
+        $app->register($provider);
+    }
 }
 
 /*
@@ -124,13 +131,16 @@ if ($app->environment() != 'production') {
 */
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 $api = app(Dingo\Api\Routing\Router::class);
 
-$api->version('v1', ['middleware' => 'cors'], function () use ($api, $app) {
-    require __DIR__.'/../routes/api.php';
+$api->version('v1', [
+    'middleware' => 'cors',
+    'namespace'  => 'App\Http\Controllers\Api\V1',
+], function () use ($api, $app) {
+    require __DIR__ . '/../routes/api.php';
 });
 
 return $app;

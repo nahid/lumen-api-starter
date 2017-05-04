@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if (env('APP_DEBUG') && ! $request->isJson()) {
+        if (env('APP_DEBUG') && ! is_api_request()) {
             return $this->renderExceptionWithWhoops($e);
         }
 
