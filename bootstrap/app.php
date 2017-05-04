@@ -62,9 +62,10 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+//    'auth' => App\Http\Middleware\Authenticate::class,
+    'cors' => Barryvdh\Cors\HandleCors::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,8 @@ $app->singleton(
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(Barryvdh\Cors\ServiceProvider::class);
 
 if ($app->environment() != 'production') {
     $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
