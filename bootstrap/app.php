@@ -24,7 +24,28 @@ $app = new Laravel\Lumen\Application(
 );
 
 // $app->withFacades();
- $app->withEloquent();
+$app->withEloquent();
+
+/**
+ |--------------------------------------------------------------------------
+ | Register Config Files
+ |--------------------------------------------------------------------------
+ |
+ | Now we will register the config files located in the base_path('config')
+ | directory.
+ */
+
+$app->configure('api');
+$app->configure('app');
+//$app->configure('auth');
+//$app->configure('broadcasting');
+//$app->configure('cache');
+$app->configure('cors');
+$app->configure('database');
+$app->configure('jwt');
+$app->configure('queue');
+$app->configure('repository');
+//$app->configure('view');
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +125,12 @@ if ($app->environment() != 'production') {
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/web.php';
+});
+
+$api = app(Dingo\Api\Routing\Router::class);
+
+$api->version('v1', ['middleware' => 'cors'], function () use ($api, $app) {
+    require __DIR__.'/../routes/api.php';
 });
 
 return $app;
