@@ -44,6 +44,7 @@ foreach ([
              'cache',
              'cors',
              'database',
+             'exception',
              'jwt',
              'middleware',
              'provider',
@@ -68,7 +69,7 @@ foreach ([
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    App\Exceptions\Kernel::class
 );
 
 $app->singleton(

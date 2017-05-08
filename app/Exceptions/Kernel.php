@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Handlers\DebugHandler;
 use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
@@ -10,10 +11,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Whoops\Handler\PrettyPageHandler;
-use Whoops\Run;
 
-class Handler extends ExceptionHandler
+class Kernel extends ExceptionHandler
 {
     /**
      * A list of the exception types that should not be reported.
@@ -50,27 +49,17 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $e)
     {
         if (env('APP_DEBUG') && ! is_api_request()) {
-            return $this->renderExceptionWithWhoops($e);
+            $exceptionHandler = new DebugHandler($request, $e);
+            return $exceptionHandler->handle();
+        }
+
+        foreach (config('exception') as $handler => $exceptions) {
+            if (in_array(get_class($e), $exceptions)) {
+                $excaptionHandler = new $handler($request, $e);
+                return $excaptionHandler->handle();
+            }
         }
 
         return parent::render($request, $e);
-    }
-
-    /**
-     * Render an exception using Whoops.
-     *
-     * @param  \Exception $e
-     * @return \Illuminate\Http\Response
-     */
-    protected function renderExceptionWithWhoops(Exception $e)
-    {
-        $whoops = new Run;
-        $whoops->pushHandler(new PrettyPageHandler());
-
-        return new Response(
-            $whoops->handleException($e),
-            $e->getStatusCode(),
-            $e->getHeaders()
-        );
     }
 }
