@@ -10,5 +10,6 @@ return [
     Prettus\Repository\Providers\LumenRepositoryServiceProvider::class => ['all'],
     Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class        => ['local'],
     Widnyana\LDRoutesList\CommandServiceProvider::class                => ['local'],
+    App\Providers\ExceptionServiceProvider::class                      => ['all'],
 ];
 

@@ -53,7 +53,7 @@ class Kernel extends ExceptionHandler
             return $exceptionHandler->handle();
         }
 
-        foreach (config('exception') as $handler => $exceptions) {
+        foreach (config('exception.handlers') as $handler => $exceptions) {
             if (in_array(get_class($e), $exceptions)) {
                 $excaptionHandler = new $handler($request, $e);
                 return $excaptionHandler->handle();
