@@ -64,4 +64,16 @@ class AuthController extends Controller
 
         return $this->response->noContent();
     }
+
+    /**
+     * Get the current authenticated user.
+     *
+     * @return \Dingo\Api\Http\Response
+     */
+    public function currentUser()
+    {
+        $user = $this->auth->user();
+
+        return $this->response->array($user);
+    }
 }
