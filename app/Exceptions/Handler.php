@@ -2,17 +2,14 @@
 
 namespace App\Exceptions;
 
-use App\Exceptions\Handlers\DebugHandler;
 use Exception;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class Kernel extends ExceptionHandler
+class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that should not be reported.
@@ -49,15 +46,18 @@ class Kernel extends ExceptionHandler
     public function render($request, Exception $e)
     {
         if (env('APP_DEBUG') && ! is_api_request()) {
-            $exceptionHandler = new DebugHandler($request, $e);
-            return $exceptionHandler->handle();
+            $exceptionHandler = new WhoopsExceptionHandler;
+            return $exceptionHandler->render($request, $e);
         }
 
         foreach (config('exception.handlers') as $handler => $exceptions) {
             if (in_array(get_class($e), $exceptions)) {
-                $excaptionHandler = new $handler($request, $e);
-                return $excaptionHandler->handle();
+                return (new $handler)->render($request, $e);
             }
+        }
+
+        if (is_api_request()) {
+            return app(config('exception.default'))->render($request, $e);
         }
 
         return parent::render($request, $e);

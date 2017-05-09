@@ -4,13 +4,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Handler
+    | Handler provider
     |--------------------------------------------------------------------------
     |
-    | Supported handlers are "laravel", "dingo".
+    | Supported handler providers are "laravel", "dingo".
     */
 
     'provider' => 'laravel',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default handler
+    |--------------------------------------------------------------------------
+    |
+    | The default handlers which will handle any exception when no available
+    | match is found in the following handlers order list.
+    */
+
+    'default' => \App\Exceptions\JsonExceptionHandler::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -34,6 +46,6 @@ return [
     */
 
     'handlers' => [
-        //
+         //
     ],
 ];

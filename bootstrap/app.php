@@ -69,7 +69,7 @@ foreach ([
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Kernel::class
+    App\Exceptions\Handler::class
 );
 
 $app->singleton(

@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Dingo\Api\Exception\Handler;
+use App\Exceptions\Handler as LaravelHandler;
+use Dingo\Api\Exception\Handler as DingoHandler;
 use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
 
 class ExceptionServiceProvider extends ServiceProvider
@@ -27,8 +27,8 @@ class ExceptionServiceProvider extends ServiceProvider
     public function register()
     {
         if (config('exception.provider') == 'laravel') {
-            app(Handler::class)->register(function (Exception $exception) {
-                return app(ExceptionHandler::class)->render(app('request'), $exception);
+            app(DingoHandler::class)->register(function (Exception $exception) {
+                return app(LaravelHandler::class)->render(app('request'), $exception);
             });
         }
     }
