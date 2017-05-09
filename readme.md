@@ -14,7 +14,7 @@ A starter project to develop API with Lumen 5.4.
 ### Installation
 - Clone the Repo:
     - `git clone git@github.com:munza/lumen-api-starter.git`
-    - 'git clone https://github.com/munza/lumen-api-starter.git'
+    - `git clone https://github.com/munza/lumen-api-starter.git`
 - `cd lumen-api-starter`
 - `composer create-project`
 - `php artisan key:generate`
