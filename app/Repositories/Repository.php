@@ -16,10 +16,10 @@ abstract class Repository extends BaseRepository
      */
     public function model()
     {
-        $modelNamespace = config('repository.generator.rootNamespace') . config('repository.generator.paths.models');
-        $modelClassname = str_replace('Repository', '', class_basename($this));
+        $namespace = config('repository.generator.rootNamespace') . config('repository.generator.paths.models');
+        $classname = str_replace('Repository', '', class_basename($this));
 
-        return "{$modelNamespace}\\{$modelClassname}";
+        return "{$namespace}\\{$classname}";
     }
 
     /**

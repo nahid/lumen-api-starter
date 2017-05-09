@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\ApiController;
 use App\Services\AuthService;
-use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
-    use Helpers;
-
     /**
      * Auth Service.
      *

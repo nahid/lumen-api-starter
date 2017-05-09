@@ -19,7 +19,7 @@ trait RestApiController
         $perPage = (int) app('request')->input('per_page')
             ?: config('repository.pagination.limit');
 
-        if (app('request')->input('per_page') == -1) {
+        if ($this->paginate == false || app('request')->input('per_page') == -1) {
             return $this->response->array($this->repository->all());
         }
 
