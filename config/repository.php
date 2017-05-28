@@ -34,7 +34,7 @@ return [
         'params'     => [
             'include' => 'include'
         ],
-        'serializer' => League\Fractal\Serializer\DataArraySerializer::class
+        'serializer' => League\Fractal\Serializer\DataArraySerializer::class,
     ],
 
     /*
@@ -224,7 +224,7 @@ return [
         'paths'         => [
             'models'       => 'Models',
             'repositories' => 'Repositories\\Eloquent',
-            'interfaces'   => 'Contracts\\Repositories',
+            'interfaces'   => 'Repositories',
             'transformers' => 'Transformers',
             'presenters'   => 'Presenters',
             'validators'   => 'Validators',

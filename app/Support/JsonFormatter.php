@@ -51,6 +51,6 @@ class JsonFormatter extends Json
             $value = $this->morphToArray($value);
         });
 
-        return $this->encode(['data' => $content]);
+        return $this->encode($content);
     }
 }

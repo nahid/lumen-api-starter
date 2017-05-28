@@ -1,7 +1,7 @@
 <?php
 
 return [
-//    App\Providers\AppServiceProvider::class                            => ['all'],
+    App\Providers\AppServiceProvider::class                            => ['all'],
 //    App\Providers\AuthServiceProvider::class                           => ['all'],
 //    App\Providers\EventServiceProvider::class                          => ['all'],
     Tymon\JWTAuth\Providers\LumenServiceProvider::class                => ['all'],

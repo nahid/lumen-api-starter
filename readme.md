@@ -3,12 +3,14 @@
 A starter project to develop API with Lumen 5.4.
 
 ### Included Packages
-- tymon/jwt-auth
-- barryvdh/laravel-cors
 - dingo/api
+- filp/whoops
+- tymon/jwt-auth
+- league/fractal
+- barryvdh/laravel-cors
 - prettus/l5-repository
 - flipbox/lumen-generator
-- filp/whoops
+- prettus/laravel-validation
 - widnyana/lumen-dingo-routes-list
 
 ### Installation
@@ -43,12 +45,12 @@ A starter project to develop API with Lumen 5.4.
 - Add controller at `app/Http/Controllers/Api/V1/PostController.php`
     ```php
         <?php
-        
+
         namespace App\Http\Controllers\Api\V1;
-        
+
         use Illuminate\Http\Request;
         use App\Http\Controllers\Api\ApiController;
-        
+
         class PostController extends ApiController
         {
             /**
@@ -62,9 +64,9 @@ A starter project to develop API with Lumen 5.4.
 - Add repository at 'app/Http/Repositories/PostRepository.php'
     ```php
         <?php
-        
+
         namespace App\Repositories;
-        
+
         class PostRepository extends Repository
         {
             /**

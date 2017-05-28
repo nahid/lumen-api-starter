@@ -45,21 +45,42 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if (env('APP_DEBUG') && ! is_api_request()) {
-            $exceptionHandler = new WhoopsExceptionHandler;
-            return $exceptionHandler->render($request, $e);
+        if ($this->isDebugable($request, $e)) {
+            $whoops = new \Whoops\Run;
+            $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+            return $whoops->handleException($e);
         }
 
-        foreach (config('exception.handlers') as $handler => $exceptions) {
-            if (in_array(get_class($e), $exceptions)) {
-                return (new $handler)->render($request, $e);
+        // Handle exception with the appropriate handler
+        foreach (config('exception.handlers') as $handler) {
+            if (in_array(get_class($e), $handler::$exceptions)) {
+                $excaptionHandler = new $handler($request, $e);
+
+                return $excaptionHandler->handle();
             }
         }
 
         if (is_api_request()) {
-            return app(config('exception.default'))->render($request, $e);
+            $handler = config('exception.default');
+            $excaptionHandler = new $handler($request, $e);
+
+            return $excaptionHandler->handle();
         }
 
         return parent::render($request, $e);
+    }
+
+    /**
+     *  Check if the errors can be shown in debugable mode
+     *  debugable when exception.debug is enabled
+     *  and not an ajax request, not an api request
+     *  or it is a fatal error
+     *
+     * @param  mixed   $request
+     * @return boolean
+     */
+    private function isDebugable($request, Exception $e)
+    {
+        return (config('app.debug') && ! is_api_request()) || $e instanceof FatalThrowableError;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Presenters\Presenter;
 use App\Validators\Validator;
@@ -27,7 +27,7 @@ abstract class Repository extends BaseRepository
      */
     public function boot()
     {
-        $this->pushCriteria(RequestCriteria::class);
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**

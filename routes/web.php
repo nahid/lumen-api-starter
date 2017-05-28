@@ -12,5 +12,8 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return response()->json([
+        'app' => config('api.name'),
+        'root' => config('api.domain').'/'.config('api.prefix'),
+    ]);
 });
