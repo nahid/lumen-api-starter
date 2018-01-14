@@ -131,9 +131,7 @@ foreach (config('provider') as $provider => $envs) {
 |
 */
 
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
+$app->router->group(['namespace' => 'App\Http\Controllers',], function ($router) {
     require __DIR__.'/../routes/web.php';
 });
 
