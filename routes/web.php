@@ -11,7 +11,7 @@
 |
 */
 
-$app->get('/', function () use ($app) {
+$router->get('/', function () use ($app) {
     return response()->json([
         'app' => config('api.name'),
         'root' => config('api.domain').'/'.config('api.prefix'),
